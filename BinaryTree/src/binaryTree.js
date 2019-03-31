@@ -1,5 +1,14 @@
-const sum = (x,y)=>{
-  return x+y;
+
+
+const preorderTraversal = (inputArray)=>{
+  var tree =   [111,121] ;
+
+  // inputArray.forEach(element =>{
+  //   console.log('element');
+  // }); 
+  
+
+  return tree;
 }
 
-exports.sum = sum;
+exports.preorderTraversal = preorderTraversal;

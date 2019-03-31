@@ -1,6 +1,7 @@
-const{sum} = require('../binaryTree');
+const{preorderTraversal} = require('../binaryTree');
 
-test('should output correct sum',()=>{
-  var actual = sum(4,4);
-  expect(actual).toBe(8);
-});
+// test('should output in preorder',()=>{
+//   var actual = preorderTraversal(1,null,2,3);
+//   expect(actual).toEqual([1,2,3]);
+//  // expect(actual).toEqual([1,2,3]);
+// });
