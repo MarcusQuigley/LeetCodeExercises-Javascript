@@ -1,16 +1,17 @@
- const{preorderTraversal} = require('./BinaryTree/src/binaryTree');
- 
-//import { preorderTraversal } from './BinaryTree/src/binaryTree';
+const { preorderTraversal } = require('./BinaryTree/src/binaryTree');
+const { binaryNode } = require('./BinaryTree/src/binaryNode')
 
-function init(){
+function init() {
   runBinaryTree();
 }
 
-function runBinaryTree(){
+function runBinaryTree() {
+  var root = new binaryNode(1);
+  root.right = new binaryNode(2);
+  root.right.left = new binaryNode(3);
 
-  const inputArray = [1,null,2,3];  
-  var result = preorderTraversal(inputArray)
-  result.forEach(e=>{
+  var result = preorderTraversal(root)
+  result.forEach(e => {
     console.log(e);
   });
 }

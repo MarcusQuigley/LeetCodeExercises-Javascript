@@ -1,14 +1,18 @@
+require('./binaryNode');
+
+var preorderTraversal = function (root) {
+  if (!root) return [];
+  var result = [];
+  var stack = [root];
+  while (stack.length) {
+    var node = stack.pop();
+    result.push(node.value);
+    if (node.left) stack.push(node.left);
+    if (node.right) stack.push(node.right);
+  }
 
 
-const preorderTraversal = (inputArray)=>{
-  var tree =   [111,121] ;
-
-  // inputArray.forEach(element =>{
-  //   console.log('element');
-  // }); 
-  
-
-  return tree;
-}
+  return result;
+};
 
 exports.preorderTraversal = preorderTraversal;

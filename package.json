@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": { 
     "test": "jest",
-    "watch-js": "watchify app.js -o bundle.js",
+    "start": "watchify app.js -o bundle.js",
     "build-js": "browserify app.js > bundle.js"
   },
   "author": "Marcus Quigley",
