@@ -6,12 +6,11 @@ var preorderTraversal = function (root) {
   var stack = [root];
   while (stack.length) {
     var node = stack.pop();
+    console.log(node);
     result.push(node.value);
-    if (node.left) stack.push(node.left);
     if (node.right) stack.push(node.right);
+    if (node.left) stack.push(node.left);
   }
-
-
   return result;
 };
 
