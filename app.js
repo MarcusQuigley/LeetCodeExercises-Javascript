@@ -1,10 +1,18 @@
-const { preorderTraversal, inorderTraversal ,postorderTraversal} = require('./BinaryTree/src/binaryTree');
-const { binaryNode } = require('./BinaryTree/src/binaryNode')
+const { preorderTraversal, inorderTraversal ,postorderTraversal,
+        levelorderTraversal, maximumDepthRecursive, symmetricTree,pathSum} 
+        = require('./BinaryTree/src/binaryTree');
+const { binaryNode } = require('./BinaryTree/src/binaryNode');
+const {missingNumber} = require('./Arrays/src/array');
 
 function init() {
   //runBinaryTreepreorderTraversal();
   //runBinaryTreeinorderTraversal();
-  runBinaryTreepostorderTraversal();
+  //runBinaryTreepostorderTraversal();
+  //runlevelorderTraversal();
+  //runmaximumDepth();
+  //runsymetricTree();
+  //runpathSum();
+  runmissingNumber();
 }
 
 function runBinaryTreepreorderTraversal() {
@@ -30,10 +38,8 @@ function runBinaryTreeinorderTraversal() {
   root.left.right = new binaryNode(12);
   root.left.right.left = new binaryNode(10);
   root.left.right.right = new binaryNode(14);
-  var result = inorderTraversal(root)
-  result.forEach(e => {
-    console.log(e);
-  });
+  var results = inorderTraversal(root)
+  displayArray(results);
 };
 
 function runBinaryTreepostorderTraversal(){
@@ -46,11 +52,59 @@ function runBinaryTreepostorderTraversal(){
   displayArray(results);
 }
 
+function runlevelorderTraversal(){
+  var root = new binaryNode(1);
+  root.left = new binaryNode(2);
+  root.right = new binaryNode(3);
+  root.left.left = new binaryNode(4);
+  root.left.right = new binaryNode(5);
+  root.right.left = new binaryNode(6);
+  var results = levelorderTraversal(root);
+  displayArray(results);
+
+}
+
+function runmaximumDepth(){
+  var root = new binaryNode(3);
+  root.left = new binaryNode(9);
+  root.right = new binaryNode(20);
+  root.right.left = new binaryNode(9);
+  root.right.right = new binaryNode(9);
+
+  var depth = maximumDepthRecursive(root);
+  console.log(`maximumDepth = ${depth}`);
+}
+
+function runsymetricTree(){
+  root = new binaryNode(1);
+  root.left = new binaryNode(2);
+  root.right = new binaryNode(2);
+  // root.left.left = new binaryNode(3);
+  // root.left.right = new binaryNode(4);
+  // root.right.left = new binaryNode(4);
+  // root.right.right = new binaryNode(3);
+  var actual = symmetricTree(root);
+  console.log(`is Symmetric: ${actual}`);
+}
+
+function runpathSum(){
+  root = new binaryNode(3);
+  root.left = new binaryNode(4);
+  root.right = new binaryNode(2);
+  var actual = pathSum(root,5);
+  console.log(`is pathSum: ${actual}`);
+}
+
+function runmissingNumber(){
+  var nums = [0,3,2,1,5];
+  var actual = missingNumber(nums);
+  console.log(`missingNumber: ${actual}`);
+}
+
 function displayArray(result){
   result.forEach(e => {
     console.log(e);
   });
 }
-
 
 init();
