@@ -1,4 +1,4 @@
-const { preorderTraversal, inorderTraversal ,postorderTraversal,
+const { preorderTraversal, inorderTraversal ,postorderTraversal, univalSubtreeCount,
         levelorderTraversal, maximumDepthRecursive, symmetricTree,pathSum} 
         = require('./BinaryTree/src/binaryTree');
 const { binaryNode } = require('./BinaryTree/src/binaryNode');
@@ -12,7 +12,8 @@ function init() {
   //runmaximumDepth();
   //runsymetricTree();
   //runpathSum();
-  runmissingNumber();
+  //runmissingNumber();
+  rununivalSubtreeCount();
 }
 
 function runBinaryTreepreorderTraversal() {
@@ -106,5 +107,18 @@ function displayArray(result){
     console.log(e);
   });
 }
+
+function rununivalSubtreeCount(){
+  root = new binaryNode(0);
+  root.left = new binaryNode(1);
+  root.right = new binaryNode(0);
+  root.right.left = new binaryNode(1);
+  root.right.right = new binaryNode(0);
+  // root.right.left.left = new binaryNode(1);
+  // root.right.left.right = new binaryNode(1);
+  var actual = univalSubtreeCount(root);
+};
+
+
 
 init();

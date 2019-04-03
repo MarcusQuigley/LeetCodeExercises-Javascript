@@ -1,5 +1,5 @@
-const { preorderTraversal, inorderTraversal, 
-        postorderTraversal, symmetricTree, pathSum } = require('../binaryTree');
+const { preorderTraversal, inorderTraversal, postorderTraversal, symmetricTree, pathSum,univalSubtreeCount
+         } = require('../binaryTree');
 const { binaryNode } = require('../binaryNode');
 
 test('should output in preorder2', () => {
@@ -89,4 +89,36 @@ test('should be true',()=>{
   root.right.right = new binaryNode(7);
   var actual = pathSum(root,15);
   expect(actual).toBe(true);
+});
+
+test('should be 3',()=>{
+  root = new binaryNode(1);
+  root.left = new binaryNode(1);
+  root.right = new binaryNode(1);
+  var actual = univalSubtreeCount(root);
+  expect(actual).toEqual(3);
+});
+
+test('should be 3',()=>{
+  root = new binaryNode(0);
+  root.left = new binaryNode(1);
+  root.right = new binaryNode(0);
+  root.right.left = new binaryNode(1);
+  root.right.right = new binaryNode(0);
+  // root.right.left.left = new binaryNode(1);
+  // root.right.left.right = new binaryNode(1);
+  var actual = univalSubtreeCount(root);
+  expect(actual).toEqual(3);
+});
+
+test('should be 5',()=>{
+  root = new binaryNode(0);
+  root.left = new binaryNode(1);
+  root.right = new binaryNode(0);
+  root.right.left = new binaryNode(1);
+  root.right.right = new binaryNode(0);
+  root.right.left.left = new binaryNode(1);
+  root.right.left.right = new binaryNode(1);
+  var actual = univalSubtreeCount(root);
+  expect(actual).toEqual(5);
 });

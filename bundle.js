@@ -91,51 +91,65 @@ var levelorderTraversal = function (root) {
   var results = [];
   var temp;
   var queue = [root];
-  while(queue.length){
+  while (queue.length) {
     var size = queue.length;
     temp = [];
-    for(var i=0;i<size;i++){
+    for (var i = 0; i < size; i++) {
       var node = queue.shift();
       temp.push(node.value);
-      if(node.left) queue.push(node.left);
-      if(node.right) queue.push(node.right);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
     }
     results.push(temp);
   }
   return results;
 }
 
- 
-var maximumDepthRecursive = function(current){
-  if(!current) return 0;
-  var left =  maximumDepthRecursive(current.left);
-  var right =  maximumDepthRecursive(current.right);
-  return Math.max(left,right)+1
-  
+
+var maximumDepthRecursive = function (current) {
+  if (!current) return 0;
+  var left = maximumDepthRecursive(current.left);
+  var right = maximumDepthRecursive(current.right);
+  return Math.max(left, right) + 1
+
 };
 
-var symmetricTree = function(root){
-  return (!root || symmetricTreeHelper(root.left,root.right));
+var symmetricTree = function (root) {
+  return (!root || symmetricTreeHelper(root.left, root.right));
 }
 
-var symmetricTreeHelper = function(left,right){
-  if(!left && !right) return true;
-  if(left && right){
-    return(left.value === right.value) &&
-      (symmetricTreeHelper(left.left,right.right) && symmetricTreeHelper(left.right,right.left));
+var symmetricTreeHelper = function (left, right) {
+  if (!left && !right) return true;
+  if (left && right) {
+    return (left.value === right.value) &&
+      (symmetricTreeHelper(left.left, right.right) && symmetricTreeHelper(left.right, right.left));
   }
   else {
     return false;
   }
 }
 
- 
- 
-var pathSum = function(node, sum){
-  if(!node) return 0;
-  if (!node.left && !node.right) return node.value==sum;
-  return (pathSum(node.left,sum-node.value) || pathSum(node.right,sum-node.value) ); 
+var pathSum = function (node, sum) {
+  if (!node) return 0;
+  if (!node.left && !node.right) return node.value == sum;
+  return (pathSum(node.left, sum - node.value) || pathSum(node.right, sum - node.value));
+}
+
+function univalSubtreeCount(root) {
+  if (!root) return 0;
+  if (!root.left && !root.right) {
+    return 1;
   }
+  else {
+    var cnt = 0;
+    if (root.left && root.right) {
+      if (root.value == root.left.value &&  root.value == root.right.value) {
+        cnt = 1;
+      }
+    }
+  }
+  return univalSubtreeCount(root.left) + univalSubtreeCount(root.right) + cnt;
+}
 
 exports.preorderTraversal = preorderTraversal;
 exports.inorderTraversal = inorderTraversal;
@@ -144,9 +158,9 @@ exports.levelorderTraversal = levelorderTraversal;
 exports.maximumDepthRecursive = maximumDepthRecursive;
 exports.symmetricTree = symmetricTree;
 exports.pathSum = pathSum;
-
+exports.univalSubtreeCount = univalSubtreeCount;
 },{"./binaryNode":2}],4:[function(require,module,exports){
-const { preorderTraversal, inorderTraversal ,postorderTraversal,
+const { preorderTraversal, inorderTraversal ,postorderTraversal, univalSubtreeCount,
         levelorderTraversal, maximumDepthRecursive, symmetricTree,pathSum} 
         = require('./BinaryTree/src/binaryTree');
 const { binaryNode } = require('./BinaryTree/src/binaryNode');
@@ -160,7 +174,8 @@ function init() {
   //runmaximumDepth();
   //runsymetricTree();
   //runpathSum();
-  runmissingNumber();
+  //runmissingNumber();
+  rununivalSubtreeCount();
 }
 
 function runBinaryTreepreorderTraversal() {
@@ -254,6 +269,19 @@ function displayArray(result){
     console.log(e);
   });
 }
+
+function rununivalSubtreeCount(){
+  root = new binaryNode(0);
+  root.left = new binaryNode(1);
+  root.right = new binaryNode(0);
+  root.right.left = new binaryNode(1);
+  root.right.right = new binaryNode(0);
+  // root.right.left.left = new binaryNode(1);
+  // root.right.left.right = new binaryNode(1);
+  var actual = univalSubtreeCount(root);
+};
+
+
 
 init();
 },{"./Arrays/src/array":1,"./BinaryTree/src/binaryNode":2,"./BinaryTree/src/binaryTree":3}]},{},[4]);
