@@ -1,5 +1,5 @@
 const { preorderTraversal, inorderTraversal, postorderTraversal, symmetricTree, pathSum,univalSubtreeCount
-         } = require('../binaryTree');
+        ,createTree, createTree2 } = require('../binaryTree');
 const { binaryNode } = require('../binaryNode');
 
 test('should output in preorder2', () => {
@@ -121,4 +121,89 @@ test('should be 5',()=>{
   root.right.left.right = new binaryNode(1);
   var actual = univalSubtreeCount(root);
   expect(actual).toEqual(5);
+});
+
+test('should return correct for CreateTree',()=>{
+  var inorder = [9,3,15,20,7];
+  var postorder = [9,15,7,20,3];
+
+  var expectedRoot = new binaryNode(3);
+  expectedRoot.left = new binaryNode(9);
+  expectedRoot.right = new binaryNode(20);
+  expectedRoot.right.left = new binaryNode(15);
+  expectedRoot.right.right = new binaryNode(7);
+
+  var actual =createTree(inorder,postorder);// createBinaryTreeFromInOrderAndPostOrder(inorder,postorder);
+  expect(actual).toEqual(expectedRoot);
+});
+
+test('should return correct for CreateTree try2',()=>{
+  var inorder = [];
+  var postorder = [];
+
+  var expectedRoot = null;
+
+  var actual =createTree(inorder,postorder);
+  expect(actual).toEqual(expectedRoot);
+});
+
+test('should return correct for CreateTree try3',()=>{
+  var inorder = [2,4,6];
+  var postorder = [2,6,4];
+
+  var expectedRoot = new binaryNode(4);
+  expectedRoot.left = new binaryNode(2);
+  expectedRoot.right = new binaryNode(6);
+
+  var actual =createTree(inorder,postorder);
+  expect(actual).toEqual(expectedRoot);
+});
+
+test('should return correct for CreateTree2 try1',()=>{
+  var inorder = [2,4,6];
+  var preorder = [4,2,6];
+
+  var expectedRoot = new binaryNode(4);
+  expectedRoot.left = new binaryNode(2);
+  expectedRoot.right = new binaryNode(6);
+
+  var actual =createTree2(preorder, inorder);
+  expect(actual).toEqual(expectedRoot);
+});
+
+test('should return correct for CreateTree2 try2',()=>{
+  var inorder = [9,3,15,20,7];
+  var preorder = [3,9,20,15,7];
+
+  var expectedRoot = new binaryNode(3);
+  expectedRoot.left = new binaryNode(9);
+  expectedRoot.right = new binaryNode(20);
+  expectedRoot.right.left = new binaryNode(15);
+  expectedRoot.right.right = new binaryNode(7);
+  var actual = createTree2(preorder, inorder);
+  expect(actual).toEqual(expectedRoot);
+});
+
+
+test('should return correct for CreateTree2 try3',()=>{
+  var inorder = [];
+  var preorder = [];
+
+  
+  var actual = createTree2(preorder, inorder);
+  expect(actual).toEqual(null);
+});
+
+test('should return correct for CreateTree2 try4',()=>{
+  var inorder = [1,2,3,4];
+  var preorder = [1,4,2,3];
+
+  var expectedRoot = new binaryNode(1);
+ 
+  expectedRoot.right = new binaryNode(4);
+ 
+  expectedRoot.right.left = new binaryNode(2);
+  expectedRoot.right.left.right = new binaryNode(3);
+  var actual = createTree2(preorder, inorder);
+  expect(actual).toEqual(expectedRoot);
 });

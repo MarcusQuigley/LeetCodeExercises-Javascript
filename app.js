@@ -1,5 +1,5 @@
 const { preorderTraversal, inorderTraversal ,postorderTraversal, univalSubtreeCount,
-        levelorderTraversal, maximumDepthRecursive, symmetricTree,pathSum} 
+        levelorderTraversal, maximumDepthRecursive, symmetricTree,pathSum,createTree, createTree2} 
         = require('./BinaryTree/src/binaryTree');
 const { binaryNode } = require('./BinaryTree/src/binaryNode');
 const {missingNumber} = require('./Arrays/src/array');
@@ -13,7 +13,15 @@ function init() {
   //runsymetricTree();
   //runpathSum();
   //runmissingNumber();
-  rununivalSubtreeCount();
+  //rununivalSubtreeCount();
+  //runcreateBinaryTreeFromInOrderAndPostOrder2();
+  runCreateTree2();
+}
+
+function displayArray(result){
+  result.forEach(e => {
+    console.log(e);
+  });
 }
 
 function runBinaryTreepreorderTraversal() {
@@ -102,11 +110,74 @@ function runmissingNumber(){
   console.log(`missingNumber: ${actual}`);
 }
 
-function displayArray(result){
-  result.forEach(e => {
-    console.log(e);
-  });
+function runcreateBinaryTreeFromInOrderAndPostOrder(){
+  //var inorder = [9,3,20];
+  //var postorder = [9,20,3];
+  var inorder = [9,3,15,20,7];
+  var postorder = [9,15,7,20,3];
+  var tree =createTree(inorder,postorder);// createBinaryTreeFromInOrderAndPostOrder(inorder,postorder);
+
+  var expectedRoot = new binaryNode(3);
+  expectedRoot.left = new binaryNode(9);
+  expectedRoot.right = new binaryNode(20);
+  expectedRoot.right.left = new binaryNode(15);
+  expectedRoot.right.right = new binaryNode(7);
+  console.log(tree);
+ 
+};
+
+function runcreateBinaryTreeFromInOrderAndPostOrder2(){
+  //var inorder = [9,3,20];
+  //var postorder = [9,20,3];
+  // var inorder = [];
+  // var postorder = [];
+  // var inorder = [2,4,6];
+  // var postorder = [2,6,4];
+  var inorder = [1,2,3,4,5];
+  var postorder = [2,1,5,4,3];
+    
+  var tree =createTree(inorder,postorder);// createBinaryTreeFromInOrderAndPostOrder(inorder,postorder);
+
+   
+  console.log(tree);
+ 
+};
+
+function runCreateTree2(){
+  // var inorder = [1,2,3,4];
+  // var preorder = [1,4,2,3];
+  var preorder = [1,2,3,4];
+  var inorder = [1,4,2,3];
+
+  var tree =createTree2(preorder, inorder);
+  console.log(tree);
+  // var expectedRoot = new binaryNode(1);
+ 
+  // expectedRoot.right = new binaryNode(2);
+ 
+  // expectedRoot.right.right = new binaryNode(3);
+  // expectedRoot.right.right.right = new binaryNode(4);
 }
+ 
+var buildTree = function(inorderList, postorderList) {
+  if (!postorderList.length) return null;
+  
+  const root = postorderList.pop();
+  //const node = new TreeNode(root);
+  const node = new binaryNode(root);
+  const rootIndex = inorderList.indexOf(root);
+  
+  const leftInorderList = inorderList.slice(0, rootIndex);
+  const rightInorderList = inorderList.slice(rootIndex + 1);
+  
+  const leftPostOrderList = postorderList.slice(0, leftInorderList.length);
+  const rightPostOrderList = postorderList.slice(leftPostOrderList.length);
+
+  node.left = leftInorderList.length ? buildTree(leftInorderList, leftPostOrderList) : null;
+  node.right = rightInorderList.length ? buildTree(rightInorderList, rightPostOrderList) : null;
+
+  return node;
+ }
 
 function rununivalSubtreeCount(){
   root = new binaryNode(0);

@@ -1,4 +1,4 @@
-require('./binaryNode');
+const {binaryNode} = require('./binaryNode');
 
 var preorderTraversal = function (root) {
   if (!root) return [];
@@ -113,12 +113,51 @@ function univalSubtreeCount(root) {
   else {
     var cnt = 0;
     if (root.left && root.right) {
-      if (root.value == root.left.value &&  root.value == root.right.value) {
+      if (root.value == root.left.value && root.value == root.right.value) {
         cnt = 1;
       }
     }
   }
   return univalSubtreeCount(root.left) + univalSubtreeCount(root.right) + cnt;
+}
+
+ 
+
+function createTree(inorder, postorder){
+  //if (!inorder || ! postorder) return null;
+  if (inorder.length==0 && postorder.length==0) return null;
+
+  var rootval = postorder[postorder.length-1];
+  var rootIndex = inorder.indexOf(rootval);
+  var leftIn = inorder.slice(0,rootIndex);
+  var rightIn =  inorder.slice(rootIndex+1);
+  
+  var leftPo =  postorder.slice(0,rootIndex);
+  var rightPo = postorder.slice(rootIndex,postorder.length-1);
+
+  var root = new binaryNode(rootval);
+  root.left = createTree(leftIn,leftPo);
+  root.right = createTree(rightIn, rightPo);
+  return root;  
+}
+
+function createTree2(preorder, inorder){
+  if (inorder.length==0 && preorder.length==0) return null;
+  
+  var rootval = preorder[0];
+  var rootindex = inorder.indexOf(rootval);
+
+  var leftIn = inorder.slice(0,rootindex);
+  var rightIn = inorder.slice(rootindex+1);
+
+  var leftPre = preorder.slice(1,rootindex+1);
+  var rightPre = preorder.slice(rootindex+1);
+  
+  var root = new binaryNode(rootval);
+  root.left = createTree2(leftPre, leftIn);
+  root.right = createTree2(rightPre, rightIn);
+  
+  return root;
 }
 
 exports.preorderTraversal = preorderTraversal;
@@ -129,3 +168,25 @@ exports.maximumDepthRecursive = maximumDepthRecursive;
 exports.symmetricTree = symmetricTree;
 exports.pathSum = pathSum;
 exports.univalSubtreeCount = univalSubtreeCount;
+ 
+exports.createTree = createTree;
+exports.createTree2 = createTree2;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
