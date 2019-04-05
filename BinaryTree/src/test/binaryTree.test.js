@@ -1,5 +1,5 @@
 const { preorderTraversal, inorderTraversal, postorderTraversal, symmetricTree, pathSum,univalSubtreeCount
-        ,createTree, createTree2 } = require('../binaryTree');
+        ,createTree, createTree2, lca } = require('../binaryTree');
 const { binaryNode } = require('../binaryNode');
 
 test('should output in preorder2', () => {
@@ -206,4 +206,21 @@ test('should return correct for CreateTree2 try4',()=>{
   expectedRoot.right.left.right = new binaryNode(3);
   var actual = createTree2(preorder, inorder);
   expect(actual).toEqual(expectedRoot);
+});
+
+test('lca should be 5',()=>{
+  
+
+  var root = new binaryNode(3);
+  root.left = new binaryNode(5);
+  root.right = new binaryNode(1);
+  root.left.left = new binaryNode(6);
+  root.left.right = new binaryNode(2);
+  root.right.left = new binaryNode(0);
+  root.right.right = new binaryNode(8);
+  root.left.left.left = new binaryNode(9);
+  root.left.right.left = new binaryNode(7);
+  root.left.right.right = new binaryNode(4);
+  var actual = lca(root, new binaryNode(9),new binaryNode(4));
+  expect(actual.value).toEqual(5);
 });

@@ -190,6 +190,32 @@ function createTree2(preorder, inorder){
   return root;
 }
 
+function lca(root, p, q){
+  if (!root) return null;
+  if (root.value == p.value || root.value == q.value) return root;
+
+  var leftsidevalue = lca(root.left,p,q);
+  var rightsidevalue = lca(root.right,p,q);
+  
+  if (!leftsidevalue) return rightsidevalue;
+  if (!rightsidevalue) return leftsidevalue;
+  return root; 
+}
+
+ 
+// const printBinaryTree = function(root){
+//   var stack = []  
+//   var queue = [root];
+//   while (queue.length)
+//   {
+//     var node = queue.pop();
+//     stack.push(node.value);
+//     if (node.left) queue.push(node.left);
+//     if (node.right) queue.push(node.right);
+//   }
+// }
+
+
 exports.preorderTraversal = preorderTraversal;
 exports.inorderTraversal = inorderTraversal;
 exports.postorderTraversal = postorderTraversal;
@@ -201,7 +227,8 @@ exports.univalSubtreeCount = univalSubtreeCount;
  
 exports.createTree = createTree;
 exports.createTree2 = createTree2;
-
+ 
+exports.lca = lca;
 
 
 
@@ -223,7 +250,9 @@ exports.createTree2 = createTree2;
 
 },{"./binaryNode":2}],4:[function(require,module,exports){
 const { preorderTraversal, inorderTraversal ,postorderTraversal, univalSubtreeCount,
-        levelorderTraversal, maximumDepthRecursive, symmetricTree,pathSum,createTree, createTree2} 
+        levelorderTraversal, maximumDepthRecursive, symmetricTree,pathSum,createTree, createTree2,
+         lca
+      } 
         = require('./BinaryTree/src/binaryTree');
 const { binaryNode } = require('./BinaryTree/src/binaryNode');
 const {missingNumber} = require('./Arrays/src/array');
@@ -239,7 +268,9 @@ function init() {
   //runmissingNumber();
   //rununivalSubtreeCount();
   //runcreateBinaryTreeFromInOrderAndPostOrder2();
-  runCreateTree2();
+  //runCreateTree2();
+  //runprintBinaryTreeUp();
+  runlca();
 }
 
 function displayArray(result){
@@ -414,6 +445,31 @@ function rununivalSubtreeCount(){
   var actual = univalSubtreeCount(root);
 };
 
+function runprintBinaryTreeUp(){
+  var root = new binaryNode(3);
+  root.left = new binaryNode(9);
+  root.right = new binaryNode(20);
+    root.left.left = new binaryNode(15);
+  // root.left.left.left = new binaryNode(19);
+   root.left.right = new binaryNode(7);
+  // root.right.left = new binaryNode(15);
+  // root.right.right = new binaryNode(17);
+}
+
+function runlca(){
+  var root = new binaryNode(3);
+  root.left = new binaryNode(5);
+  root.right = new binaryNode(1);
+  root.left.left = new binaryNode(6);
+  root.left.right = new binaryNode(2);
+  root.right.left = new binaryNode(0);
+  // root.right.right = new binaryNode(8);
+  // root.left.left.left = new binaryNode(9);
+  // root.left.right.left = new binaryNode(7);
+  // root.left.right.right = new binaryNode(4);
+  var actual = lca(root, new binaryNode(5),new binaryNode(1));
+  console.log(`lca: ${actual.value}`);
+}
 
 
 init();

@@ -160,6 +160,32 @@ function createTree2(preorder, inorder){
   return root;
 }
 
+function lca(root, p, q){
+  if (!root) return null;
+  if (root.value == p.value || root.value == q.value) return root;
+
+  var leftsidevalue = lca(root.left,p,q);
+  var rightsidevalue = lca(root.right,p,q);
+  
+  if (!leftsidevalue) return rightsidevalue;
+  if (!rightsidevalue) return leftsidevalue;
+  return root; 
+}
+
+ 
+// const printBinaryTree = function(root){
+//   var stack = []  
+//   var queue = [root];
+//   while (queue.length)
+//   {
+//     var node = queue.pop();
+//     stack.push(node.value);
+//     if (node.left) queue.push(node.left);
+//     if (node.right) queue.push(node.right);
+//   }
+// }
+
+
 exports.preorderTraversal = preorderTraversal;
 exports.inorderTraversal = inorderTraversal;
 exports.postorderTraversal = postorderTraversal;
@@ -171,7 +197,8 @@ exports.univalSubtreeCount = univalSubtreeCount;
  
 exports.createTree = createTree;
 exports.createTree2 = createTree2;
-
+ 
+exports.lca = lca;
 
 
 
