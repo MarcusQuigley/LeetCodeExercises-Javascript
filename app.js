@@ -1,9 +1,10 @@
 const { preorderTraversal, inorderTraversal ,postorderTraversal, univalSubtreeCount,
         levelorderTraversal, maximumDepthRecursive, symmetricTree,pathSum,createTree, createTree2,
-         lca
+         lca, recursiveTraversal, binaryTreeSame, nextrightpointer1,nextrightpointer2, nextrightpointer3
       } 
         = require('./BinaryTree/src/binaryTree');
 const { binaryNode } = require('./BinaryTree/src/binaryNode');
+const {binaryNodeNext} = require('./BinaryTree/src/binaryNodeNext');
 const {missingNumber} = require('./Arrays/src/array');
 
 function init() {
@@ -19,7 +20,11 @@ function init() {
   //runcreateBinaryTreeFromInOrderAndPostOrder2();
   //runCreateTree2();
   //runprintBinaryTreeUp();
-  runlca();
+  //runlca();
+  //runrecursiveTraversal();
+  //runbinaryTreeSame();
+  //runnextrightpointer1();
+  runnextrightpointer2();
 }
 
 function displayArray(result){
@@ -218,6 +223,63 @@ function runlca(){
   // root.left.right.right = new binaryNode(4);
   var actual = lca(root, new binaryNode(5),new binaryNode(1));
   console.log(`lca: ${actual.value}`);
+}
+
+function runrecursiveTraversal(){
+  var root = new binaryNode(3);
+  root.left = new binaryNode(5);
+  root.right = new binaryNode(1);
+  // root.left.left = new binaryNode(6);
+  // root.left.right = new binaryNode(2);
+  // root.right.left = new binaryNode(0);
+  // root.right.right = new binaryNode(8);
+  // root.left.left.left = new binaryNode(9);
+  // root.left.right.left = new binaryNode(7);
+  // root.left.right.right = new binaryNode(4);
+    recursiveTraversal(root);
+  //console.log(`lca: ${actual.value}`);
+}
+
+function runbinaryTreeSame(){
+  var p = new binaryNode(3);
+  
+  p.right = new binaryNode(1);
+  p.right.left = new binaryNode(5);
+  //root.left.left = new binaryNode(6);
+  var q = new binaryNode(3);
+  //q.left = new binaryNode(5);
+  q.right = new binaryNode(1);
+  q.right.left = new binaryNode(5);
+
+  var answer = binaryTreeSame(p,q);
+  console.log(answer);
+}
+
+function runnextrightpointer1(){
+  var root = new binaryNodeNext(1);
+  root.left = new binaryNodeNext(2);
+  root.right = new binaryNodeNext(3);
+  root.left.left = new binaryNodeNext(4);
+  root.left.right = new binaryNodeNext(5);
+  root.right.left = new binaryNodeNext(6);
+  root.right.right = new binaryNodeNext(7);
+
+  var result = nextrightpointer1(root);
+console.log(result);
+}
+
+function runnextrightpointer2(){
+  var root = new binaryNodeNext(1);
+  root.left = new binaryNodeNext(2);
+  root.right = new binaryNodeNext(3);
+  root.left.left = new binaryNodeNext(4);
+  root.left.right = new binaryNodeNext(5);
+   
+  root.right.right = new binaryNodeNext(7);
+
+  //var result = nextrightpointer2(root);
+  var result = nextrightpointer3(root);
+console.log(result);
 }
 
 

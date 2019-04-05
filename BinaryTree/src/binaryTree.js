@@ -1,4 +1,6 @@
-const {binaryNode} = require('./binaryNode');
+const { binaryNode } = require('./binaryNode');
+const { binaryNodeNext } = require('./binaryNodeNext');
+
 
 var preorderTraversal = function (root) {
   if (!root) return [];
@@ -121,69 +123,123 @@ function univalSubtreeCount(root) {
   return univalSubtreeCount(root.left) + univalSubtreeCount(root.right) + cnt;
 }
 
- 
 
-function createTree(inorder, postorder){
+
+function createTree(inorder, postorder) {
   //if (!inorder || ! postorder) return null;
-  if (inorder.length==0 && postorder.length==0) return null;
+  if (inorder.length == 0 && postorder.length == 0) return null;
 
-  var rootval = postorder[postorder.length-1];
+  var rootval = postorder[postorder.length - 1];
   var rootIndex = inorder.indexOf(rootval);
-  var leftIn = inorder.slice(0,rootIndex);
-  var rightIn =  inorder.slice(rootIndex+1);
-  
-  var leftPo =  postorder.slice(0,rootIndex);
-  var rightPo = postorder.slice(rootIndex,postorder.length-1);
+  var leftIn = inorder.slice(0, rootIndex);
+  var rightIn = inorder.slice(rootIndex + 1);
+
+  var leftPo = postorder.slice(0, rootIndex);
+  var rightPo = postorder.slice(rootIndex, postorder.length - 1);
 
   var root = new binaryNode(rootval);
-  root.left = createTree(leftIn,leftPo);
+  root.left = createTree(leftIn, leftPo);
   root.right = createTree(rightIn, rightPo);
-  return root;  
-}
-
-function createTree2(preorder, inorder){
-  if (inorder.length==0 && preorder.length==0) return null;
-  
-  var rootval = preorder[0];
-  var rootindex = inorder.indexOf(rootval);
-
-  var leftIn = inorder.slice(0,rootindex);
-  var rightIn = inorder.slice(rootindex+1);
-
-  var leftPre = preorder.slice(1,rootindex+1);
-  var rightPre = preorder.slice(rootindex+1);
-  
-  var root = new binaryNode(rootval);
-  root.left = createTree2(leftPre, leftIn);
-  root.right = createTree2(rightPre, rightIn);
-  
   return root;
 }
 
-function lca(root, p, q){
+function createTree2(preorder, inorder) {
+  if (inorder.length == 0 && preorder.length == 0) return null;
+
+  var rootval = preorder[0];
+  var rootindex = inorder.indexOf(rootval);
+
+  var leftIn = inorder.slice(0, rootindex);
+  var rightIn = inorder.slice(rootindex + 1);
+
+  var leftPre = preorder.slice(1, rootindex + 1);
+  var rightPre = preorder.slice(rootindex + 1);
+
+  var root = new binaryNode(rootval);
+  root.left = createTree2(leftPre, leftIn);
+  root.right = createTree2(rightPre, rightIn);
+
+  return root;
+}
+
+function lca(root, p, q) {
   if (!root) return null;
   if (root.value == p.value || root.value == q.value) return root;
 
-  var leftsidevalue = lca(root.left,p,q);
-  var rightsidevalue = lca(root.right,p,q);
-  
+  var leftsidevalue = lca(root.left, p, q);
+  var rightsidevalue = lca(root.right, p, q);
+
   if (!leftsidevalue) return rightsidevalue;
   if (!rightsidevalue) return leftsidevalue;
-  return root; 
+  return root;
 }
 
- 
-// const printBinaryTree = function(root){
-//   var stack = []  
-//   var queue = [root];
-//   while (queue.length)
-//   {
-//     var node = queue.pop();
-//     stack.push(node.value);
-//     if (node.left) queue.push(node.left);
-//     if (node.right) queue.push(node.right);
-//   }
-// }
+function recursiveTraversal(root) {
+  if (!root) return null;
+  console.log(root.value);
+  recursiveTraversal(root.left);
+  recursiveTraversal(root.right);
+  //console.log("               finished");
+}
+
+function binaryTreeSame(p, q) {
+  if (!p && !q) return true;
+  if (!p || !q) return false;
+  if (p.value != q.value) return false;
+
+  return (binaryTreeSame(p.left, q.left) && binaryTreeSame(p.right, q.right));
+
+  // if (binaryTreeSame(p.left,q.left)==false) return false;
+  // if (binaryTreeSame(p.right,q.right)==false) return false;
+
+  // return true;
+
+}
+//perfect binary tree
+function nextrightpointer1(root) {
+  if (!root) return null;
+
+  if (root.left) root.left.next = root.right;
+  if (root.right && root.next) root.right.next = root.next.left;
+
+  nextrightpointer1(root.left);
+  nextrightpointer1(root.right);
+
+  return root;
+}
+
+function nextrightpointer2(root) {
+  if (!root) return null;
+  var queue = [root];
+  while (queue.length) {
+    var size = queue.length;
+    for (var i = 0; i < size; i++) {
+      var node = queue[i];
+      node.next = ((i + 1) < size) ? queue[i + 1] : null;
+    }
+    for (var i = 0; i < size; i++) {
+      var n = queue.shift();
+      if (n.left) queue.push(n.left);
+      if (n.right) queue.push(n.right);
+    }
+  }
+  return root;
+}
+
+function nextrightpointer3(root) {
+  if (!root) return null;
+  var queue = [root];
+  while (queue.length) {
+    var size = queue.length;
+    for (var i = 0; i < size; i++) {
+      var n = queue.shift();
+      n.next = i < (size-1) ? queue[0] : null;
+      if (n.left) queue.push(n.left);
+      if (n.right) queue.push(n.right);
+    }
+  }
+  return root;
+}
 
 
 exports.preorderTraversal = preorderTraversal;
@@ -194,13 +250,14 @@ exports.maximumDepthRecursive = maximumDepthRecursive;
 exports.symmetricTree = symmetricTree;
 exports.pathSum = pathSum;
 exports.univalSubtreeCount = univalSubtreeCount;
- 
 exports.createTree = createTree;
 exports.createTree2 = createTree2;
- 
 exports.lca = lca;
-
-
+exports.recursiveTraversal = recursiveTraversal;
+exports.binaryTreeSame = binaryTreeSame;
+exports.nextrightpointer1 = nextrightpointer1;
+exports.nextrightpointer2 = nextrightpointer2;
+exports.nextrightpointer3=nextrightpointer3;
 
 
 

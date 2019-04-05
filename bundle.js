@@ -28,7 +28,19 @@ class binaryNode {
 }
 exports.binaryNode = binaryNode;
 },{}],3:[function(require,module,exports){
-const {binaryNode} = require('./binaryNode');
+class binaryNodeNext {
+  constructor(val) {
+    this.value = val;
+    this.left = null;
+    this.right = null;
+    this.next = null;
+  }
+}
+exports.binaryNodeNext = binaryNodeNext;
+},{}],4:[function(require,module,exports){
+const { binaryNode } = require('./binaryNode');
+const { binaryNodeNext } = require('./binaryNodeNext');
+
 
 var preorderTraversal = function (root) {
   if (!root) return [];
@@ -151,69 +163,123 @@ function univalSubtreeCount(root) {
   return univalSubtreeCount(root.left) + univalSubtreeCount(root.right) + cnt;
 }
 
- 
 
-function createTree(inorder, postorder){
+
+function createTree(inorder, postorder) {
   //if (!inorder || ! postorder) return null;
-  if (inorder.length==0 && postorder.length==0) return null;
+  if (inorder.length == 0 && postorder.length == 0) return null;
 
-  var rootval = postorder[postorder.length-1];
+  var rootval = postorder[postorder.length - 1];
   var rootIndex = inorder.indexOf(rootval);
-  var leftIn = inorder.slice(0,rootIndex);
-  var rightIn =  inorder.slice(rootIndex+1);
-  
-  var leftPo =  postorder.slice(0,rootIndex);
-  var rightPo = postorder.slice(rootIndex,postorder.length-1);
+  var leftIn = inorder.slice(0, rootIndex);
+  var rightIn = inorder.slice(rootIndex + 1);
+
+  var leftPo = postorder.slice(0, rootIndex);
+  var rightPo = postorder.slice(rootIndex, postorder.length - 1);
 
   var root = new binaryNode(rootval);
-  root.left = createTree(leftIn,leftPo);
+  root.left = createTree(leftIn, leftPo);
   root.right = createTree(rightIn, rightPo);
-  return root;  
-}
-
-function createTree2(preorder, inorder){
-  if (inorder.length==0 && preorder.length==0) return null;
-  
-  var rootval = preorder[0];
-  var rootindex = inorder.indexOf(rootval);
-
-  var leftIn = inorder.slice(0,rootindex);
-  var rightIn = inorder.slice(rootindex+1);
-
-  var leftPre = preorder.slice(1,rootindex+1);
-  var rightPre = preorder.slice(rootindex+1);
-  
-  var root = new binaryNode(rootval);
-  root.left = createTree2(leftPre, leftIn);
-  root.right = createTree2(rightPre, rightIn);
-  
   return root;
 }
 
-function lca(root, p, q){
+function createTree2(preorder, inorder) {
+  if (inorder.length == 0 && preorder.length == 0) return null;
+
+  var rootval = preorder[0];
+  var rootindex = inorder.indexOf(rootval);
+
+  var leftIn = inorder.slice(0, rootindex);
+  var rightIn = inorder.slice(rootindex + 1);
+
+  var leftPre = preorder.slice(1, rootindex + 1);
+  var rightPre = preorder.slice(rootindex + 1);
+
+  var root = new binaryNode(rootval);
+  root.left = createTree2(leftPre, leftIn);
+  root.right = createTree2(rightPre, rightIn);
+
+  return root;
+}
+
+function lca(root, p, q) {
   if (!root) return null;
   if (root.value == p.value || root.value == q.value) return root;
 
-  var leftsidevalue = lca(root.left,p,q);
-  var rightsidevalue = lca(root.right,p,q);
-  
+  var leftsidevalue = lca(root.left, p, q);
+  var rightsidevalue = lca(root.right, p, q);
+
   if (!leftsidevalue) return rightsidevalue;
   if (!rightsidevalue) return leftsidevalue;
-  return root; 
+  return root;
 }
 
- 
-// const printBinaryTree = function(root){
-//   var stack = []  
-//   var queue = [root];
-//   while (queue.length)
-//   {
-//     var node = queue.pop();
-//     stack.push(node.value);
-//     if (node.left) queue.push(node.left);
-//     if (node.right) queue.push(node.right);
-//   }
-// }
+function recursiveTraversal(root) {
+  if (!root) return null;
+  console.log(root.value);
+  recursiveTraversal(root.left);
+  recursiveTraversal(root.right);
+  //console.log("               finished");
+}
+
+function binaryTreeSame(p, q) {
+  if (!p && !q) return true;
+  if (!p || !q) return false;
+  if (p.value != q.value) return false;
+
+  return (binaryTreeSame(p.left, q.left) && binaryTreeSame(p.right, q.right));
+
+  // if (binaryTreeSame(p.left,q.left)==false) return false;
+  // if (binaryTreeSame(p.right,q.right)==false) return false;
+
+  // return true;
+
+}
+//perfect binary tree
+function nextrightpointer1(root) {
+  if (!root) return null;
+
+  if (root.left) root.left.next = root.right;
+  if (root.right && root.next) root.right.next = root.next.left;
+
+  nextrightpointer1(root.left);
+  nextrightpointer1(root.right);
+
+  return root;
+}
+
+function nextrightpointer2(root) {
+  if (!root) return null;
+  var queue = [root];
+  while (queue.length) {
+    var size = queue.length;
+    for (var i = 0; i < size; i++) {
+      var node = queue[i];
+      node.next = ((i + 1) < size) ? queue[i + 1] : null;
+    }
+    for (var i = 0; i < size; i++) {
+      var n = queue.shift();
+      if (n.left) queue.push(n.left);
+      if (n.right) queue.push(n.right);
+    }
+  }
+  return root;
+}
+
+function nextrightpointer3(root) {
+  if (!root) return null;
+  var queue = [root];
+  while (queue.length) {
+    var size = queue.length;
+    for (var i = 0; i < size; i++) {
+      var n = queue.shift();
+      n.next = i < (size-1) ? queue[0] : null;
+      if (n.left) queue.push(n.left);
+      if (n.right) queue.push(n.right);
+    }
+  }
+  return root;
+}
 
 
 exports.preorderTraversal = preorderTraversal;
@@ -224,11 +290,14 @@ exports.maximumDepthRecursive = maximumDepthRecursive;
 exports.symmetricTree = symmetricTree;
 exports.pathSum = pathSum;
 exports.univalSubtreeCount = univalSubtreeCount;
- 
 exports.createTree = createTree;
 exports.createTree2 = createTree2;
- 
 exports.lca = lca;
+exports.recursiveTraversal = recursiveTraversal;
+exports.binaryTreeSame = binaryTreeSame;
+exports.nextrightpointer1 = nextrightpointer1;
+exports.nextrightpointer2 = nextrightpointer2;
+exports.nextrightpointer3=nextrightpointer3;
 
 
 
@@ -246,15 +315,14 @@ exports.lca = lca;
 
 
 
-
-
-},{"./binaryNode":2}],4:[function(require,module,exports){
+},{"./binaryNode":2,"./binaryNodeNext":3}],5:[function(require,module,exports){
 const { preorderTraversal, inorderTraversal ,postorderTraversal, univalSubtreeCount,
         levelorderTraversal, maximumDepthRecursive, symmetricTree,pathSum,createTree, createTree2,
-         lca
+         lca, recursiveTraversal, binaryTreeSame, nextrightpointer1,nextrightpointer2, nextrightpointer3
       } 
         = require('./BinaryTree/src/binaryTree');
 const { binaryNode } = require('./BinaryTree/src/binaryNode');
+const {binaryNodeNext} = require('./BinaryTree/src/binaryNodeNext');
 const {missingNumber} = require('./Arrays/src/array');
 
 function init() {
@@ -270,7 +338,11 @@ function init() {
   //runcreateBinaryTreeFromInOrderAndPostOrder2();
   //runCreateTree2();
   //runprintBinaryTreeUp();
-  runlca();
+  //runlca();
+  //runrecursiveTraversal();
+  //runbinaryTreeSame();
+  //runnextrightpointer1();
+  runnextrightpointer2();
 }
 
 function displayArray(result){
@@ -471,6 +543,63 @@ function runlca(){
   console.log(`lca: ${actual.value}`);
 }
 
+function runrecursiveTraversal(){
+  var root = new binaryNode(3);
+  root.left = new binaryNode(5);
+  root.right = new binaryNode(1);
+  // root.left.left = new binaryNode(6);
+  // root.left.right = new binaryNode(2);
+  // root.right.left = new binaryNode(0);
+  // root.right.right = new binaryNode(8);
+  // root.left.left.left = new binaryNode(9);
+  // root.left.right.left = new binaryNode(7);
+  // root.left.right.right = new binaryNode(4);
+    recursiveTraversal(root);
+  //console.log(`lca: ${actual.value}`);
+}
+
+function runbinaryTreeSame(){
+  var p = new binaryNode(3);
+  
+  p.right = new binaryNode(1);
+  p.right.left = new binaryNode(5);
+  //root.left.left = new binaryNode(6);
+  var q = new binaryNode(3);
+  //q.left = new binaryNode(5);
+  q.right = new binaryNode(1);
+  q.right.left = new binaryNode(5);
+
+  var answer = binaryTreeSame(p,q);
+  console.log(answer);
+}
+
+function runnextrightpointer1(){
+  var root = new binaryNodeNext(1);
+  root.left = new binaryNodeNext(2);
+  root.right = new binaryNodeNext(3);
+  root.left.left = new binaryNodeNext(4);
+  root.left.right = new binaryNodeNext(5);
+  root.right.left = new binaryNodeNext(6);
+  root.right.right = new binaryNodeNext(7);
+
+  var result = nextrightpointer1(root);
+console.log(result);
+}
+
+function runnextrightpointer2(){
+  var root = new binaryNodeNext(1);
+  root.left = new binaryNodeNext(2);
+  root.right = new binaryNodeNext(3);
+  root.left.left = new binaryNodeNext(4);
+  root.left.right = new binaryNodeNext(5);
+   
+  root.right.right = new binaryNodeNext(7);
+
+  //var result = nextrightpointer2(root);
+  var result = nextrightpointer3(root);
+console.log(result);
+}
+
 
 init();
-},{"./Arrays/src/array":1,"./BinaryTree/src/binaryNode":2,"./BinaryTree/src/binaryTree":3}]},{},[4]);
+},{"./Arrays/src/array":1,"./BinaryTree/src/binaryNode":2,"./BinaryTree/src/binaryNodeNext":3,"./BinaryTree/src/binaryTree":4}]},{},[5]);
